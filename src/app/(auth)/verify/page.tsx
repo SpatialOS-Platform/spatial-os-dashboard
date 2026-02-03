@@ -1,12 +1,12 @@
 
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
-export default function VerifyPage() {
+function VerifyForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const initialEmail = searchParams.get('email') || '';
@@ -41,13 +41,44 @@ export default function VerifyPage() {
             }
 
             router.push('/');
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Verification failed');
         } finally {
             setIsLoading(false);
         }
     };
 
+    return (
+        <form className="mt-8 space-y-6" onSubmit={handleVerify}>
+            <div className="space-y-4">
+                <Input
+                    placeholder="Email Address"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
+                />
+                <Input
+                    placeholder="6-Digit OTP"
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    required
+                    className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 text-center tracking-[0.5em] text-xl"
+                />
+            </div>
+
+            {error && <div className="text-red-500 text-sm text-center">{error}</div>}
+
+            <Button type="submit" className="w-full bg-white text-black hover:bg-gray-200" isLoading={isLoading}>
+                Verify & Login
+            </Button>
+        </form>
+    );
+}
+
+export default function VerifyPage() {
     return (
         <div className="flex min-h-screen items-center justify-center bg-black">
             <div className="w-full max-w-md space-y-8 p-8 border border-white/10 rounded-xl bg-white/5 backdrop-blur-xl">
@@ -56,32 +87,9 @@ export default function VerifyPage() {
                     <p className="mt-2 text-sm text-gray-400">Check your console for the Mock OTP</p>
                 </div>
 
-                <form className="mt-8 space-y-6" onSubmit={handleVerify}>
-                    <div className="space-y-4">
-                        <Input
-                            placeholder="Email Address"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
-                        />
-                        <Input
-                            placeholder="6-Digit OTP"
-                            type="text"
-                            value={otp}
-                            onChange={(e) => setOtp(e.target.value)}
-                            required
-                            className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 text-center tracking-[0.5em] text-xl"
-                        />
-                    </div>
-
-                    {error && <div className="text-red-500 text-sm text-center">{error}</div>}
-
-                    <Button type="submit" className="w-full bg-white text-black hover:bg-gray-200" isLoading={isLoading}>
-                        Verify & Login
-                    </Button>
-                </form>
+                <Suspense fallback={<div className="text-center text-gray-400">Loading...</div>}>
+                    <VerifyForm />
+                </Suspense>
             </div>
         </div>
     );

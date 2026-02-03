@@ -28,8 +28,8 @@ export default function LoginPage() {
             const data = await auth.login({ username: email, password }); // Using email as username for now or we change backend to accept email
             login(data.token, { ...data, email }); // Mocking user object structure for now
             router.push('/');
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Login failed');
         } finally {
             setIsLoading(false);
         }

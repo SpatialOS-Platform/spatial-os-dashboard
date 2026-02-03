@@ -86,8 +86,8 @@ export default function AnchorSearchPage() {
 
         // Sort
         result.sort((a, b) => {
-            let valueA: any = a[sortField]
-            let valueB: any = b[sortField]
+            let valueA: string | number = a[sortField]
+            let valueB: string | number = b[sortField]
 
             if (sortField === 'created_at') {
                 valueA = new Date(valueA).getTime()

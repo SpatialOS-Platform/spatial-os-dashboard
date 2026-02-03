@@ -23,8 +23,8 @@ export default function SpatialManager() {
             });
             setStatus('✅ Anchor Registered!');
             setPayload('');
-        } catch (err: any) {
-            setStatus(`❌ Error: ${err.message}`);
+        } catch (err) {
+            setStatus(`❌ Error: ${err instanceof Error ? err.message : 'Unknown error'}`);
         }
     };
 
@@ -93,7 +93,7 @@ export default function SpatialManager() {
                 <h2 className="text-xl mb-2">Instructions</h2>
                 <ul className="list-disc pl-5">
                     <li>Upload a reference image to a public URL.</li>
-                    <li>Enter the Space ID (e.g., "lobby-main").</li>
+                    <li>Enter the Space ID (e.g., &quot;lobby-main&quot;).</li>
                     <li>Paste the Image URL into Payload.</li>
                     <li>Click Register.</li>
                     <li>The Unity Client will now recognize this image and sync coordinates.</li>

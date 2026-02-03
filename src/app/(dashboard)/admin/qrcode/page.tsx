@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useMemo } from 'react'
+import Image from 'next/image'
 
 interface QRCodeOptions {
     anchorId?: string
@@ -20,22 +21,18 @@ export default function QRCodeGeneratorPage() {
     })
     const [content, setContent] = useState('')
     const [qrDataUrl, setQrDataUrl] = useState<string | null>(null)
-    const [spaces, setSpaces] = useState<{ space_id: string; name: string }[]>([])
-    const [anchors, setAnchors] = useState<{ anchor_id: string; type: string }[]>([])
     const canvasRef = useRef<HTMLCanvasElement>(null)
+    // Mock data - use useMemo instead of useEffect to avoid cascading renders
+    const spaces = useMemo(() => [
+        { space_id: 'space-1', name: 'Building A' },
+        { space_id: 'space-2', name: 'Floor 1' },
+        { space_id: 'space-3', name: 'Conference Room' },
+    ], [])
 
-    useEffect(() => {
-        // Load spaces
-        setSpaces([
-            { space_id: 'space-1', name: 'Building A' },
-            { space_id: 'space-2', name: 'Floor 1' },
-            { space_id: 'space-3', name: 'Conference Room' },
-        ])
-        setAnchors([
-            { anchor_id: 'anchor-1', type: 'QR' },
-            { anchor_id: 'anchor-2', type: 'IMAGE' },
-        ])
-    }, [])
+    const anchors = useMemo(() => [
+        { anchor_id: 'anchor-1', type: 'QR' },
+        { anchor_id: 'anchor-2', type: 'IMAGE' },
+    ], [])
 
     const generateQRContent = () => {
         // Generate deep link URL for Spatial OS
@@ -219,7 +216,7 @@ export default function QRCodeGeneratorPage() {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Error Correction</label>
                                 <select
                                     value={options.errorCorrection}
-                                    onChange={e => setOptions({ ...options, errorCorrection: e.target.value as any })}
+                                    onChange={e => setOptions({ ...options, errorCorrection: e.target.value as 'L' | 'M' | 'Q' | 'H' })}
                                     className="w-full px-3 py-2 border rounded-lg"
                                 >
                                     <option value="L">Low (7%)</option>
@@ -265,7 +262,7 @@ export default function QRCodeGeneratorPage() {
 
                     <div className="flex items-center justify-center bg-gray-100 rounded-lg p-8 min-h-[300px]">
                         {qrDataUrl ? (
-                            <img src={qrDataUrl} alt="QR Code" className="max-w-full" />
+                            <Image src={qrDataUrl} alt="QR Code" className="max-w-full" width={options.size} height={options.size} unoptimized />
                         ) : (
                             <div className="text-gray-400 text-center">
                                 <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,6 +1,6 @@
 export const AUTH_TOKEN_KEY = "spatial_auth_token";
 
-export async function login(principalId: string, type: "user" | "app" = "user"): Promise<boolean> {
+export async function login(principalId: string, _type: "user" | "app" = "user"): Promise<boolean> {
     try {
         // TODO: Replace with actual API call when backend is reachable
         // const response = await fetch("/v1/auth/login", {

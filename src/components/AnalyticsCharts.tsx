@@ -3,15 +3,14 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 
-interface AnalyticsData {
-    stats: {
-        total_events: number;
-        active_users: number;
-    };
-    heatmap: any[]; // Placeholder for now
+// Heatmap data is placeholder for future implementation
+interface HeatmapPoint {
+    x: number;
+    y: number;
+    value: number;
 }
 
-export function AnalyticsCharts({ spaceId }: { spaceId?: string }) {
+export function AnalyticsCharts() {
     // Mock data for demo since real data is scarce
     const timeSeriesData = [
         { name: '00:00', users: 12, events: 45 },

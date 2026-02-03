@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { spatial } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
-import { Box, Save, Eye, Layers, Move, RefreshCw } from 'lucide-react';
+import { Box, Save, Layers, RefreshCw } from 'lucide-react';
 
 // Types for 3D scene
 interface AnchorNode {
@@ -46,7 +46,7 @@ export default function SpaceViewerPage() {
     const [loading, setLoading] = useState(true);
 
     // Camera/view state
-    const [offset, setOffset] = useState({ x: 400, y: 300 });
+    const [offset] = useState({ x: 400, y: 300 });
     const [scale, setScale] = useState(1);
 
     const fetchSpaces = async () => {
@@ -68,7 +68,7 @@ export default function SpaceViewerPage() {
     const fetchAnchors = async (spaceId: string) => {
         try {
             const data = await spatial.getAnchorsInSpace(spaceId);
-            const mapped: AnchorNode[] = data.map((a: any, i: number) => ({
+            const mapped: AnchorNode[] = data.map((a: { anchor_id: string; type: string; lat?: number; lon?: number; alt?: number; payload?: string; status: string }, i: number) => ({
                 id: a.anchor_id,
                 type: a.type,
                 position: {
@@ -86,7 +86,7 @@ export default function SpaceViewerPage() {
         }
     };
 
-    const buildHierarchy = (flatSpaces: any[]): SpaceNode[] => {
+    const buildHierarchy = (flatSpaces: { space_id: string; name: string; parent_space_id?: string; lat?: number; lon?: number }[]): SpaceNode[] => {
         const map = new Map<string, SpaceNode>();
         const roots: SpaceNode[] = [];
 
@@ -114,6 +114,7 @@ export default function SpaceViewerPage() {
 
     useEffect(() => {
         fetchSpaces();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

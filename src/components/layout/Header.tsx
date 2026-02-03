@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
-import { Bell, Search, UserCircle } from "lucide-react";
+import { Bell, Search } from "lucide-react";
 
 export function Header({ className }: { className?: string }) {
     const pathname = usePathname();

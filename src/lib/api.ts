@@ -42,17 +42,31 @@ export const admin = {
     getStats: () => fetchAPI('/admin/stats', { method: 'GET' })
 }
 
+interface AnchorData {
+    space_id: string;
+    type: string;
+    payload?: string;
+    lat?: number;
+    lon?: number;
+}
+
+interface SpaceData {
+    name: string;
+    parent_space_id?: string | null;
+    [key: string]: unknown;
+}
+
 export const spatial = {
-    registerAnchor: (data: any) => fetchAPI('/spatial/anchor', { method: 'POST', body: JSON.stringify(data) }),
-    updateAnchor: (anchorId: string, data: any) => fetchAPI(`/spatial/anchor/${anchorId}`, { method: 'PATCH', body: JSON.stringify(data) }),
+    registerAnchor: (data: AnchorData) => fetchAPI('/spatial/anchor', { method: 'POST', body: JSON.stringify(data) }),
+    updateAnchor: (anchorId: string, data: Partial<AnchorData>) => fetchAPI(`/spatial/anchor/${anchorId}`, { method: 'PATCH', body: JSON.stringify(data) }),
     deleteAnchor: (anchorId: string) => fetchAPI(`/spatial/anchor/${anchorId}`, { method: 'DELETE' }),
     getNearby: (lat: number, lon: number) => fetchAPI(`/spatial/nearby?lat=${lat}&lon=${lon}`, { method: 'GET' }),
     getHierarchy: (spaceId: string) => fetchAPI(`/spatial/hierarchy/${spaceId}`, { method: 'GET' }),
     // Space CRUD
-    createSpace: (data: any) => fetchAPI('/spatial/space', { method: 'POST', body: JSON.stringify(data) }),
+    createSpace: (data: SpaceData) => fetchAPI('/spatial/space', { method: 'POST', body: JSON.stringify(data) }),
     getSpaces: () => fetchAPI('/spatial/spaces', { method: 'GET' }),
     getSpace: (spaceId: string) => fetchAPI(`/spatial/space/${spaceId}`, { method: 'GET' }),
-    updateSpace: (spaceId: string, data: any) => fetchAPI(`/spatial/space/${spaceId}`, { method: 'PATCH', body: JSON.stringify(data) }),
+    updateSpace: (spaceId: string, data: Partial<SpaceData>) => fetchAPI(`/spatial/space/${spaceId}`, { method: 'PATCH', body: JSON.stringify(data) }),
     getAnchorsInSpace: (spaceId: string) => fetchAPI(`/spatial/space/${spaceId}/anchors`, { method: 'GET' })
 }
 

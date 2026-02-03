@@ -25,8 +25,8 @@ export default function RegisterPage() {
             await auth.register({ username: displayName, email, password });
             // Redirect to login
             router.push('/login');
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Registration failed');
         } finally {
             setIsLoading(false);
         }

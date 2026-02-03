@@ -2,12 +2,36 @@
 
 import { useState, useRef } from 'react'
 
+interface ExportedSpace {
+    space_id: string
+    name: string
+    parent_space_id?: string | null
+    origin_lat?: number
+    origin_lon?: number
+}
+
+interface ExportedAnchor {
+    anchor_id: string
+    space_id: string
+    type: string
+    px: number
+    py: number
+    pz: number
+    payload?: string
+}
+
+interface ExportedLayer {
+    layer_id: string
+    name: string
+    is_visible: boolean
+}
+
 interface SpaceExport {
     version: string
     exported_at: string
-    spaces: any[]
-    anchors: any[]
-    layers: any[]
+    spaces: ExportedSpace[]
+    anchors: ExportedAnchor[]
+    layers: ExportedLayer[]
 }
 
 export default function ImportExportPage() {
@@ -203,8 +227,8 @@ export default function ImportExportPage() {
 
                     {importResult && (
                         <div className={`mt-4 p-3 rounded-lg text-sm ${importResult.success
-                                ? 'bg-green-50 border border-green-200 text-green-800'
-                                : 'bg-red-50 border border-red-200 text-red-800'
+                            ? 'bg-green-50 border border-green-200 text-green-800'
+                            : 'bg-red-50 border border-red-200 text-red-800'
                             }`}>
                             {importResult.success ? '✅' : '❌'} {importResult.message}
                         </div>

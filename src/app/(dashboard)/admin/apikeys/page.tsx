@@ -24,7 +24,7 @@ export default function ApiKeysPage() {
     const [keys, setKeys] = useState<ApiKey[]>([]);
     const [loading, setLoading] = useState(true);
     const [creating, setCreating] = useState(false);
-    const [users, setUsers] = useState<any[]>([]);
+    const [users, setUsers] = useState<{ principal_id: string; display_name?: string; email?: string }[]>([]);
     const [selectedUser, setSelectedUser] = useState('');
     const [selectedTier, setSelectedTier] = useState('free');
     const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -176,8 +176,8 @@ export default function ApiKeysPage() {
                                     </TableCell>
                                     <TableCell>
                                         <span className={`px-2 py-1 rounded-full text-xs ${k.tier === 'enterprise' ? 'bg-purple-500/20 text-purple-300' :
-                                                k.tier === 'pro' ? 'bg-blue-500/20 text-blue-300' :
-                                                    'bg-gray-500/20 text-gray-300'
+                                            k.tier === 'pro' ? 'bg-blue-500/20 text-blue-300' :
+                                                'bg-gray-500/20 text-gray-300'
                                             }`}>
                                             {k.tier}
                                         </span>

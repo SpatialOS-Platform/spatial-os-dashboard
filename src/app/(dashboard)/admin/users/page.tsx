@@ -4,8 +4,15 @@ import { useEffect, useState } from 'react';
 import { admin } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 
+interface User {
+    principal_id: string;
+    display_name?: string;
+    email?: string;
+    role?: string;
+}
+
 export default function UsersPage() {
-    const [users, setUsers] = useState<any[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -22,8 +29,8 @@ export default function UsersPage() {
                 console.error('Unexpected data format:', data);
                 setError('Received invalid data format from API');
             }
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Failed to load users');
         } finally {
             setIsLoading(false);
         }
@@ -34,8 +41,8 @@ export default function UsersPage() {
             const key = await admin.createKey({ owner_id: userId, tier: 'pro' });
             alert(`API Key Created: ${key.key}`);
             loadUsers();
-        } catch (err: any) {
-            alert(`Error: ${err.message}`);
+        } catch (err) {
+            alert(`Error: ${err instanceof Error ? err.message : 'Failed to create key'}`);
         }
     };
 

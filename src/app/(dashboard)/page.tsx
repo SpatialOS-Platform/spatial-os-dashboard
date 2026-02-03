@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { admin } from '@/lib/api';
-import { Card } from '@/components/ui/Card'; // Check capitalization
+import { StatCard } from '@/components/ui/StatCard';
 import { Activity, Box, Database, Users } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -34,10 +34,10 @@ export default function DashboardPage() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <Card title="Active Spaces" value={stats.spaces.toString()} icon={Box} trend="+2.5%" />
-                <Card title="Total Anchors" value={stats.anchors.toString()} icon={Database} trend="+12%" />
-                <Card title="Registered Users" value={stats.users.toString()} icon={Users} trend="+4" />
-                <Card title="Avg Latency" value={`${stats.latency_ms}ms`} icon={Activity} trend="-1.2%" />
+                <StatCard title="Active Spaces" value={stats.spaces.toString()} icon={Box} trend="+2.5%" />
+                <StatCard title="Total Anchors" value={stats.anchors.toString()} icon={Database} trend="+12%" />
+                <StatCard title="Registered Users" value={stats.users.toString()} icon={Users} trend="+4" />
+                <StatCard title="Avg Latency" value={`${stats.latency_ms}ms`} icon={Activity} trend="-1.2%" />
             </div>
 
             {/* Placeholder Chart Area */}
